@@ -22,4 +22,7 @@ class MembershipSerializer(serializers.ModelSerializer):
         team = self.context["team"]
         if Memberships.objects.filter(team=team, user=value).exists():
             raise serializers.ValidationError("This user is already a member of this team.")
+
+        if value == Memberships.Role.OWNER:
+            raise serializers.ValidationError("You cannot assign the owner role.")
         return value

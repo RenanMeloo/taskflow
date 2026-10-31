@@ -8,7 +8,8 @@ class TeamPermission(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        if request.method == 'DELETE':
+        if view.action == "destroy":
+            # only the owner can delete the team
             return obj.owner == request.user
 
         # check if the user is an admin or owner of the team
