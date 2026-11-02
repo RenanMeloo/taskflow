@@ -6,5 +6,8 @@ class Project(models.Model):
     team = models.ForeignKey('teams.Team', on_delete=models.CASCADE, related_name='projects')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-created_at"]
+
     def __str__(self):
         return self.name
