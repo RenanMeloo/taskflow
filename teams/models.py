@@ -6,6 +6,9 @@ class Team(models.Model):
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='owned_teams')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 class Memberships(models.Model):
     class Role(models.TextChoices):
         MEMBER = 'member', 'Member'
