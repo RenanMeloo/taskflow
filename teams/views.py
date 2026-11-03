@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Memberships, Team
-from .permission import TeamPermission
+from .permissions import TeamPermission
 from .serializers import MembershipSerializer, TeamSerializer
 
 
