@@ -3,6 +3,7 @@ from rest_framework.test import APIClient
 
 from teams.models import Memberships, Team
 from users.models import User
+from projects.models import Project
 
 
 @pytest.fixture
@@ -26,3 +27,7 @@ def team(owner, member):
     Memberships.objects.create(user=owner, team=team, role=Memberships.Role.OWNER)
     Memberships.objects.create(user=member, team=team, role=Memberships.Role.MEMBER)
     return team
+
+@pytest.fixture
+def project(team):
+    return Project.objects.create(name="Project 1", description="Test project", team=team)

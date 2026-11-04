@@ -2,6 +2,8 @@ import pytest
 
 from projects.models import Project
 from users.models import User
+from tasks.models import Task
+
 
 @pytest.mark.django_db
 def test_owner_can_create_project(api_client, owner, team):
