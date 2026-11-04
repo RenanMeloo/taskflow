@@ -46,3 +46,11 @@ def test_assigning_task_to_non_team_member_fails(api_client, owner, member, proj
     response = api_client.patch(f"/api/tasks/{task.id}/", {"assignee": outsider.id})
     assert response.status_code == 400
 
+@pytest.mark.django_db
+def test_member_can_comment_on_task(api_client, member, project):
+    task = Task.objects.create(title="Task 1", project=project, created_by=member)
+    api_client.force_authenticate(user=member)
+    response = api_client.post(f"/api/tasks/{task.id}/comments/", {"content": "This is a comment"})
+    assert response.status_code == 201
+    assert response.data["content"] == "This is a comment"
+    assert response.data["author"] == member.id
