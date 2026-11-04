@@ -54,3 +54,15 @@ def test_member_can_comment_on_task(api_client, member, project):
     assert response.status_code == 201
     assert response.data["content"] == "This is a comment"
     assert response.data["author"] == member.id
+
+@pytest.mark.django_db
+def test_filter_tasks_by_status(api_client, member, project):
+    Task.objects.create(title="Pending task", project=project, status=Task.Status.TODO)
+    Task.objects.create(title="Finished task", project=project, status=Task.Status.DONE)
+    api_client.force_authenticate(user=member)
+
+    response = api_client.get("/api/tasks/?status=done")
+
+    assert response.status_code == 200
+    titles = [task["title"] for task in response.data["results"]]
+    assert titles == ["Finished task"]
