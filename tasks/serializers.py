@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from teams.models import Memberships
-from .models import Task
+from .models import Task, Comment
 
 class TaskSerializer(serializers.ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -31,3 +31,12 @@ class TaskSerializer(serializers.ModelSerializer):
             )
 
         return attrs
+    
+
+class CommentSerializer(serializers.ModelSerializer):
+    author_username = serializers.CharField(source="author.username", read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ["id", "task", "author", "author_username", "content", "created_at"]
+        read_only_fields = ["task", "author", "created_at"]
