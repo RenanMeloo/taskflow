@@ -4,7 +4,6 @@ from .models import Project
 from .permissions import ProjectPermission
 from .serializers import ProjectSerializer
 
-
 class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated, ProjectPermission]

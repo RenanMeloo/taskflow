@@ -1,13 +1,21 @@
-from rest_framework import viewsets
+from rest_framework import viewsets,status
 from rest_framework.permissions import IsAuthenticated
 from .models import Task
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, CommentSerializer
 from .permissions import TaskPermission
 from rest_framework.decorators import action
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.response import Response
 
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated, TaskPermission]
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    filterset_fields = ["status", "priority", "assignee", "project", "created_by"]
+    search_fields = ["title", "description"]
+    ordering_fields = ["due_date", "created_at", "updated_at"]
+
 
     def get_queryset(self):
         # Return tasks that belong to projects where the user is a member of the team
