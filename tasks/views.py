@@ -22,7 +22,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Task.objects.filter(project__team__memberships__user=user)
 
-    @action(detail=True, methods=["get", "post"])
+    @action(detail=True, methods=["get", "post"], serializer_class=CommentSerializer)
     def comments(self, request,pk=None):
         task = self.get_object()
 
