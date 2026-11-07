@@ -1,4 +1,4 @@
-# taskflow API
+# TaskFlow API
 
 team task management REST API built with Django REST Framework, featuring JWT authentication and role-based permissions.
 
