@@ -1,9 +1,9 @@
 import pytest
 from rest_framework.test import APIClient
 
+from projects.models import Project
 from teams.models import Memberships, Team
 from users.models import User
-from projects.models import Project
 
 
 @pytest.fixture
@@ -13,12 +13,16 @@ def api_client():
 
 @pytest.fixture
 def owner():
-    return User.objects.create_user(username="owner", email="owner@test.com", password="pass12345")
+    return User.objects.create_user(
+        username="owner", email="owner@test.com", password="pass12345"
+    )
 
 
 @pytest.fixture
 def member():
-    return User.objects.create_user(username="member", email="member@test.com", password="pass12345")
+    return User.objects.create_user(
+        username="member", email="member@test.com", password="pass12345"
+    )
 
 
 @pytest.fixture
@@ -28,6 +32,9 @@ def team(owner, member):
     Memberships.objects.create(user=member, team=team, role=Memberships.Role.MEMBER)
     return team
 
+
 @pytest.fixture
 def project(team):
-    return Project.objects.create(name="Project 1", description="Test project", team=team)
+    return Project.objects.create(
+        name="Project 1", description="Test project", team=team
+    )
