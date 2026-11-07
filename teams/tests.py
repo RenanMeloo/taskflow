@@ -63,7 +63,7 @@ def test_cannot_add_duplicate_member(api_client,owner, member, team):
     )
 
     assert response.status_code == 400
-    assert Memberships.objects.filter(user=member, team=team).count() == 
+    assert Memberships.objects.filter(user=member, team=team).count() == 1
 
 @pytest.mark.django_db
 def test_owner_cannot_be_removed(api_client, owner, team):
