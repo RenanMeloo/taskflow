@@ -1,7 +1,9 @@
 import pytest
 
-from .models import Team, Memberships
 from users.models import User
+
+from .models import Memberships, Team
+
 
 @pytest.mark.django_db
 def test_creator_becomes_owner(api_client, owner):
@@ -50,7 +52,7 @@ def test_owner_role_cannot_be_assigned(api_client, owner, team):
         {"user": new_user.id, "role": Memberships.Role.OWNER},
     )
 
-    assert response.status_code == 201
+    assert response.status_code == 400
     assert not Memberships.objects.filter(user=new_user, team=team).exists()
 
 @pytest.mark.django_db
