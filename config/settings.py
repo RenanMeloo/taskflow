@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
+    'drf_spectacular',
     'users',
     'teams',
     'projects',
@@ -93,9 +94,7 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
+
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
@@ -105,7 +104,17 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
     "rest_framework_simplejwt.authentication.JWTAuthentication",
     "rest_framework.authentication.SessionAuthentication",
-],
+    ],
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "TaskFlow API",
+    "DESCRIPTION": "Team task management API with role-based permissions.",
+    "VERSION": "1.0.0",
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 
