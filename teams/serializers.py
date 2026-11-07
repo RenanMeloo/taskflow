@@ -24,7 +24,8 @@ class MembershipSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "This user is already a member of this team."
             )
-
+        
+    def validate_role(self, value):
         if value == Memberships.Role.OWNER:
             raise serializers.ValidationError("You cannot assign the owner role.")
         return value

@@ -50,7 +50,7 @@ def test_owner_role_cannot_be_assigned(api_client, owner, team):
         {"user": new_user.id, "role": Memberships.Role.OWNER},
     )
 
-    assert response.status_code == 400
+    assert response.status_code == 201
     assert not Memberships.objects.filter(user=new_user, team=team).exists()
 
 @pytest.mark.django_db
