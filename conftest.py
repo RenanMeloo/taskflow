@@ -24,11 +24,16 @@ def member():
         username="member", email="member@test.com", password="pass12345"
     )
 
+@pytest.fixture
+def admin():
+    return User.objects.create_user(username="admin", email="admin@test.com", password="pass12345")
+
 
 @pytest.fixture
-def team(owner, member):
+def team(owner, admin, member):
     team = Team.objects.create(name="Backend", owner=owner)
     Memberships.objects.create(user=owner, team=team, role=Memberships.Role.OWNER)
+    Memberships.objects.create(user=admin, team=team, role=Memberships.Role.ADMIN)
     Memberships.objects.create(user=member, team=team, role=Memberships.Role.MEMBER)
     return team
 
@@ -38,3 +43,5 @@ def project(team):
     return Project.objects.create(
         name="Project 1", description="Test project", team=team
     )
+
+
