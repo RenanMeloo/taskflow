@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from teams.models import Memberships
+from teams.models import Membership
 
 from .models import Comment, Task
 
@@ -28,7 +28,7 @@ class TaskSerializer(serializers.ModelSerializer):
     def validate_project(self, value):
         # Only members of the project's team can add tasks to it
         user = self.context["request"].user
-        if not Memberships.objects.filter(user=user, team=value.team).exists():
+        if not Membership.objects.filter(user=user, team=value.team).exists():
             raise serializers.ValidationError(
                 "You are not a member of this project's team."
             )
@@ -41,7 +41,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
         if (
             assignee
-            and not Memberships.objects.filter(
+            and not Membership.objects.filter(
                 user=assignee, team=project.team
             ).exists()
         ):

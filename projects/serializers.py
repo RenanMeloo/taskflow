@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from teams.models import Memberships
+from teams.models import Membership
 
 from .models import Project
 
@@ -13,10 +13,10 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def validate_team(self, value):
         user = self.context["request"].user
-        if not Memberships.objects.filter(
+        if not Membership.objects.filter(
             user=user,
             team=value,
-            role__in=[Memberships.Role.OWNER, Memberships.Role.ADMIN],
+            role__in=[Membership.Role.OWNER, Membership.Role.ADMIN],
         ).exists():
             raise serializers.ValidationError(
                 "You are not an owner or admin of this team."
