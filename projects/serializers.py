@@ -18,7 +18,5 @@ class ProjectSerializer(serializers.ModelSerializer):
             team=value,
             role__in=[Membership.Role.OWNER, Membership.Role.ADMIN],
         ).exists():
-            raise serializers.ValidationError(
-                "You are not an owner or admin of this team."
-            )
+            raise serializers.ValidationError("You are not an owner or admin of this team.")
         return value

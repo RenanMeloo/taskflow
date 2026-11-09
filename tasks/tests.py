@@ -25,9 +25,7 @@ def test_outsider_cannot_see_task(api_client, project):
         project=project,
         created_by=project.team.owner,
     )
-    outsider = User.objects.create_user(
-        username="outsider", email="outsider@example.com", password="pass12345"
-    )
+    outsider = User.objects.create_user(username="outsider", email="outsider@example.com", password="pass12345")
 
     # force authenticate the outsider user and try to access the task list and detail endpoints
     api_client.force_authenticate(user=outsider)
@@ -53,9 +51,7 @@ def test_non_creator_cannot_delete_task(api_client, owner, member, project):
 
 @pytest.mark.django_db
 def test_assigning_task_to_non_team_member_fails(api_client, owner, member, project):
-    outsider = User.objects.create_user(
-        username="outsider", email="outsider@example.com", password="pass12345"
-    )
+    outsider = User.objects.create_user(username="outsider", email="outsider@example.com", password="pass12345")
     task = Task.objects.create(title="Task 1", project=project, created_by=owner)
     api_client.force_authenticate(user=owner)
     response = api_client.patch(f"/api/tasks/{task.id}/", {"assignee": outsider.id})
@@ -66,9 +62,7 @@ def test_assigning_task_to_non_team_member_fails(api_client, owner, member, proj
 def test_member_can_comment_on_task(api_client, member, project):
     task = Task.objects.create(title="Task 1", project=project, created_by=member)
     api_client.force_authenticate(user=member)
-    response = api_client.post(
-        f"/api/tasks/{task.id}/comments/", {"content": "This is a comment"}
-    )
+    response = api_client.post(f"/api/tasks/{task.id}/comments/", {"content": "This is a comment"})
     assert response.status_code == 201
     assert response.data["content"] == "This is a comment"
     assert response.data["author"] == member.id

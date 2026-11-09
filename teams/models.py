@@ -4,9 +4,7 @@ from django.db import models
 class Team(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    owner = models.ForeignKey(
-        "users.User", on_delete=models.CASCADE, related_name="owned_teams"
-    )
+    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="owned_teams")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -25,6 +23,4 @@ class Membership(models.Model):
     joined_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["user", "team"], name="unique_membership")
-        ]
+        constraints = [models.UniqueConstraint(fields=["user", "team"], name="unique_membership")]

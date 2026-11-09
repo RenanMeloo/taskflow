@@ -29,9 +29,7 @@ class TaskSerializer(serializers.ModelSerializer):
         # Only members of the project's team can add tasks to it
         user = self.context["request"].user
         if not Membership.objects.filter(user=user, team=value.team).exists():
-            raise serializers.ValidationError(
-                "You are not a member of this project's team."
-            )
+            raise serializers.ValidationError("You are not a member of this project's team.")
         return value
 
     def validate(self, attrs):
@@ -39,15 +37,8 @@ class TaskSerializer(serializers.ModelSerializer):
         project = attrs.get("project") or self.instance.project
         assignee = attrs.get("assignee")
 
-        if (
-            assignee
-            and not Membership.objects.filter(
-                user=assignee, team=project.team
-            ).exists()
-        ):
-            raise serializers.ValidationError(
-                {"assignee": "The assignee must be a member of the project's team."}
-            )
+        if assignee and not Membership.objects.filter(user=assignee, team=project.team).exists():
+            raise serializers.ValidationError({"assignee": "The assignee must be a member of the project's team."})
 
         return attrs
 

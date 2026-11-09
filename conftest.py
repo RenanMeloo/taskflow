@@ -13,16 +13,13 @@ def api_client():
 
 @pytest.fixture
 def owner():
-    return User.objects.create_user(
-        username="owner", email="owner@test.com", password="pass12345"
-    )
+    return User.objects.create_user(username="owner", email="owner@test.com", password="pass12345")
 
 
 @pytest.fixture
 def member():
-    return User.objects.create_user(
-        username="member", email="member@test.com", password="pass12345"
-    )
+    return User.objects.create_user(username="member", email="member@test.com", password="pass12345")
+
 
 @pytest.fixture
 def admin():
@@ -40,8 +37,4 @@ def team(owner, admin, member):
 
 @pytest.fixture
 def project(team):
-    return Project.objects.create(
-        name="Project 1", description="Test project", team=team
-    )
-
-
+    return Project.objects.create(name="Project 1", description="Test project", team=team)

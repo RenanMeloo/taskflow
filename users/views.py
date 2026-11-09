@@ -10,6 +10,7 @@ class RegisterViews(generics.CreateAPIView):
     # set the permission classes for the view
     permission_classes = [AllowAny]
 
+
 class UserDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
 

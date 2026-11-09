@@ -30,9 +30,7 @@ def test_member_cannot_edit_project(api_client, member, team):
 
     api_client.force_authenticate(user=member)
 
-    response = api_client.put(
-        f"/api/projects/{project.id}/", {"name": "Site editado", "team": team.id}
-    )
+    response = api_client.put(f"/api/projects/{project.id}/", {"name": "Site editado", "team": team.id})
 
     assert response.status_code == 403
     assert not Project.objects.filter(name="Site editado", team=team).exists()
@@ -48,9 +46,7 @@ def test_unauthorized_user_cannot_list_projects(api_client, team):
 @pytest.mark.django_db
 def test_outsider_cannot_see_project(api_client, team):
     project = Project.objects.create(name="Site novo", team=team)
-    outsider = User.objects.create_user(
-        username="outsider", email="outsider@test.com", password="pass12345"
-    )
+    outsider = User.objects.create_user(username="outsider", email="outsider@test.com", password="pass12345")
     api_client.force_authenticate(user=outsider)
 
     list_response = api_client.get("/api/projects/")
