@@ -2,7 +2,7 @@ import pytest
 from rest_framework.test import APIClient
 
 from projects.models import Project
-from teams.models import Memberships, Team
+from teams.models import Membership, Team
 from users.models import User
 
 
@@ -32,9 +32,9 @@ def admin():
 @pytest.fixture
 def team(owner, admin, member):
     team = Team.objects.create(name="Backend", owner=owner)
-    Memberships.objects.create(user=owner, team=team, role=Memberships.Role.OWNER)
-    Memberships.objects.create(user=admin, team=team, role=Memberships.Role.ADMIN)
-    Memberships.objects.create(user=member, team=team, role=Memberships.Role.MEMBER)
+    Membership.objects.create(user=owner, team=team, role=Membership.Role.OWNER)
+    Membership.objects.create(user=admin, team=team, role=Membership.Role.ADMIN)
+    Membership.objects.create(user=member, team=team, role=Membership.Role.MEMBER)
     return team
 
 
