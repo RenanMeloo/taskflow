@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.django_db
 def test_user_can_update_own_profile(api_client, member):
     api_client.force_authenticate(user=member)
