@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from .models import Memberships
+from .models import Membership
 
 
 class TeamPermission(permissions.BasePermission):
@@ -14,8 +14,8 @@ class TeamPermission(permissions.BasePermission):
             return obj.owner == request.user
 
         # check if the user is an admin or owner of the team
-        return Memberships.objects.filter(
+        return Membership.objects.filter(
             user=request.user,
             team=obj,
-            role__in=[Memberships.Role.ADMIN, Memberships.Role.OWNER],
+            role__in=[Membership.Role.ADMIN, Membership.Role.OWNER],
         ).exists()

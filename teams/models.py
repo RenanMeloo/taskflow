@@ -13,7 +13,7 @@ class Team(models.Model):
         return self.name
 
 
-class Memberships(models.Model):
+class Membership(models.Model):
     class Role(models.TextChoices):
         MEMBER = "member", "Member"
         ADMIN = "admin", "Admin"

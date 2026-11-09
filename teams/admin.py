@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Memberships, Team
+from .models import Membership, Team
 
 admin.site.register(Team)
-admin.site.register(Memberships)
+admin.site.register(Membership)

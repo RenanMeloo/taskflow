@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .models import Memberships, Team
+from .models import Membership, Team
 from .permissions import TeamPermission
 from .serializers import MembershipSerializer, TeamSerializer
 
@@ -22,10 +22,10 @@ class TeamViewSet(viewsets.ModelViewSet):
         # The creator becomes the team owner
         with transaction.atomic():
             team = serializer.save(owner=self.request.user)
-            Memberships.objects.create(
+            Membership.objects.create(
                 user=self.request.user,
                 team=team,
-                role=Memberships.Role.OWNER,
+                role=Membership.Role.OWNER,
             )
 
     @action(detail=True, methods=["get", "post"])
@@ -44,9 +44,9 @@ class TeamViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["delete"], url_path=r"members/(?P<user_id>\d+)")
     def remove_member(self, request, pk=None, user_id=None):
         team = self.get_object()
-        membership = get_object_or_404(Memberships, team=team, user_id=user_id)
+        membership = get_object_or_404(Membership, team=team, user_id=user_id)
 
-        if membership.role == Memberships.Role.OWNER:
+        if membership.role == Membership.Role.OWNER:
             return Response(
                 {"detail": "You cannot remove the owner of the team."},
                 status=status.HTTP_400_BAD_REQUEST,
