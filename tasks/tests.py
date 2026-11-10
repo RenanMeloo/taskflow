@@ -79,3 +79,16 @@ def test_filter_tasks_by_status(api_client, member, project):
     assert response.status_code == 200
     titles = [task["title"] for task in response.data["results"]]
     assert titles == ["Finished task"]
+
+@pytest.mark.django_db
+def test_order_tasks_by_priority_level(api_client, member, project):
+    Task.objects.create(title="Low priority task", project=project, priority=Task.Priority.LOW)
+    Task.objects.create(title="High priority task", project=project, priority=Task.Priority.HIGH)
+    Task.objects.create(title="Medium priority task", project=project, priority=Task.Priority.MEDIUM)
+    api_client.force_authenticate(user=member)
+
+    response = api_client.get("/api/tasks/?ordering=priority_level")
+
+    assert response.status_code == 200
+    titles = [task["title"] for task in response.data["results"]]
+    assert titles == ["Low priority task", "Medium priority task", "High priority task"]

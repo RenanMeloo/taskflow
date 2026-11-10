@@ -1,3 +1,4 @@
+from django.db.models import Case, IntegerField, Value, When
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -16,12 +17,20 @@ class TaskViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ["status", "priority", "assignee", "project", "created_by"]
     search_fields = ["title", "description"]
-    ordering_fields = ["due_date", "created_at", "updated_at"]
+    ordering_fields = ["due_date", "created_at", "updated_at", "priority_level"]
 
     def get_queryset(self):
-        # Return tasks that belong to projects where the user is a member of the team
-        user = self.request.user
-        return Task.objects.filter(project__team__memberships__user=user)
+        # Users only see tasks from their teams' projects
+        return Task.objects.filter(
+            project__team__memberships__user=self.request.user
+        ).annotate(
+            priority_level=Case(
+                When(priority=Task.Priority.LOW, then=Value(1)),
+                When(priority=Task.Priority.MEDIUM, then=Value(2)),
+                When(priority=Task.Priority.HIGH, then=Value(3)),
+                output_field=IntegerField(),
+            )
+        )
 
     @action(detail=True, methods=["get", "post"], serializer_class=CommentSerializer)
     def comments(self, request, pk=None):
