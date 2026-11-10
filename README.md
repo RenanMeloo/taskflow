@@ -1,6 +1,6 @@
 # TaskFlow API
 
-[![CI](https://github.com/RenanMeloo/taskflow-api/actions/workflows/ci.yml/badge.svg)](https://github.com/RenanMeloo/taskflow-api/actions/workflows/ci.yml)
+[![CI](https://github.com/RenanMeloo/taskflow/actions/workflows/ci.yml/badge.svg)](https://github.com/RenanMeloo/taskflow/actions/workflows/ci.yml)
 
 A REST API for teams to organize projects and tasks, built with Django REST Framework. It features JWT authentication, role-based permissions and team-scoped data: users only ever see the teams, projects and tasks they belong to.
 
@@ -100,8 +100,8 @@ Additional rules:
 You only need [Docker](https://www.docker.com/) installed.
 
 ```bash
-git clone https://github.com/RenanMeloo/taskflow-api.git
-cd taskflow-api
+git clone https://github.com/RenanMeloo/taskflow.git
+cd taskflow
 
 cp .env.example .env             # then set a SECRET_KEY in .env
 docker compose up --build
@@ -120,8 +120,8 @@ docker compose exec web python manage.py createsuperuser
 Requires Python 3.14. Without a `DATABASE_URL`, the project uses SQLite.
 
 ```bash
-git clone https://github.com/RenanMeloo/taskflow-api.git
-cd taskflow-api
+git clone https://github.com/RenanMeloo/taskflow.git
+cd taskflow
 
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
