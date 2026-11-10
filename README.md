@@ -91,7 +91,7 @@ Additional rules:
 
 - **Filter by:** `status`, `priority`, `assignee`, `project`, `created_by`
 - **Search in:** `title`, `description`
-- **Order by:** `due_date`, `created_at`, `updated_at` (prefix with `-` for descending)
+- **Order by:** `due_date`, `created_at`, `updated_at`, `priority_level` (prefix with `-` for descending)
 
 ## Running locally
 
@@ -172,8 +172,9 @@ Every push to `main` runs the linter and the test suite on GitHub Actions.
 
 ## Next steps
 
-- Production server setup with Gunicorn
-- Order tasks by priority level instead of alphabetically
+- Production server setup with Gunicorngit add tasks/views.py tasks/tests.py README.md
+git commit -m "feat: allow ordering tasks by priority level" -m "Annotate tasks with a numeric priority level so ordering follows urgency instead of alphabetical order."
+git push
 - Allow team owners to delete tasks whose creator has left
 - Password change endpoint
 - Deployment
