@@ -92,3 +92,27 @@ def test_order_tasks_by_priority_level(api_client, member, project):
     assert response.status_code == 200
     titles = [task["title"] for task in response.data["results"]]
     assert titles == ["Low priority task", "Medium priority task", "High priority task"]
+
+@pytest.mark.django_db
+def test_member_cannot_delete_orphan_task(api_client, member, project):
+    # The creator is no longer part of the team, so the task is orphaned
+    outsider = User.objects.create_user(username="outsider", email="outsider@test.com", password="pass12345")
+    task = Task.objects.create(title="Orphan task", project=project, created_by=outsider)
+    api_client.force_authenticate(user=member)
+
+    response = api_client.delete(f"/api/tasks/{task.id}/")
+
+    assert response.status_code == 403
+    assert Task.objects.filter(id=task.id).exists()
+
+@pytest.mark.django_db
+def test_admin_can_delete_orphan_task(api_client, admin, project):
+    # The creator is no longer part of the team, so the task is orphaned
+    outsider = User.objects.create_user(username="outsider", email="outsider@test.com", password="pass12345")
+    task = Task.objects.create(title="Orphan task", project=project, created_by=outsider)
+    api_client.force_authenticate(user=admin)
+
+    response = api_client.delete(f"/api/tasks/{task.id}/")
+
+    assert response.status_code == 204
+    assert not Task.objects.filter(id=task.id).exists()
