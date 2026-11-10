@@ -172,9 +172,7 @@ Every push to `main` runs the linter and the test suite on GitHub Actions.
 
 ## Next steps
 
-- Production server setup with Gunicorngit add tasks/views.py tasks/tests.py README.md
-git commit -m "feat: allow ordering tasks by priority level" -m "Annotate tasks with a numeric priority level so ordering follows urgency instead of alphabetical order."
-git push
+- Production server setup with Gunicorngit 
 - Allow team owners to delete tasks whose creator has left
 - Password change endpoint
 - Deployment
