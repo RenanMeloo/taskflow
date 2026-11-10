@@ -24,7 +24,8 @@ A REST API for teams to organize projects and tasks, built with Django REST Fram
 - `pytest`, `pytest-django` and `pytest-cov` for testing
 - `ruff` for linting and formatting
 - GitHub Actions for continuous integration
-- SQLite in development
+- Docker and Docker Compose
+- PostgreSQL (SQLite as a fallback for tests and quick local runs)
 
 ## Data model
 
@@ -94,6 +95,30 @@ Additional rules:
 
 ## Running locally
 
+### With Docker (recommended)
+
+You only need [Docker](https://www.docker.com/) installed.
+
+```bash
+git clone https://github.com/RenanMeloo/taskflow-api.git
+cd taskflow-api
+
+cp .env.example .env             # then set a SECRET_KEY in .env
+docker compose up --build
+```
+
+This starts the API and a PostgreSQL database, and applies the migrations automatically. Database data is kept in a Docker volume, so it survives restarts.
+
+To create an admin user:
+
+```bash
+docker compose exec web python manage.py createsuperuser
+```
+
+### Without Docker
+
+Requires Python 3.14. Without a `DATABASE_URL`, the project uses SQLite.
+
 ```bash
 git clone https://github.com/RenanMeloo/taskflow-api.git
 cd taskflow-api
@@ -141,12 +166,13 @@ Every push to `main` runs the linter and the test suite on GitHub Actions.
 
 **Server-controlled fields.** Fields like a team's `owner`, a task's `created_by` and a comment's `author` are read-only or hidden, and are always set from the authenticated user. Clients cannot create resources on behalf of someone else.
 
+**Database configured by environment.** The database comes from a `DATABASE_URL` variable. Docker Compose points it to PostgreSQL, while tests and CI run on SQLite without any extra setup.
+
 **Validation that spans fields.** Checking that an assignee belongs to the project's team needs both fields, so it lives in the serializer's `validate` method. On partial updates the project falls back to the existing task's project, so the rule cannot be bypassed with a `PATCH`.
 
 ## Next steps
 
-- Docker setup for a one-command local environment
-- PostgreSQL for production
+- Production server setup with Gunicorn
 - Order tasks by priority level instead of alphabetically
 - Allow team owners to delete tasks whose creator has left
 - Password change endpoint
